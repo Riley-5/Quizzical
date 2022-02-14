@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import './styles.css'
+import {nanoid} from 'nanoid'
 import IntroScreen from './components/IntroScreen'
 import TriviaQuestion from './components/TriviaQuestion'
 
@@ -11,14 +12,18 @@ function App() {
     // Create state to track if the 'Start Quiz button' was clicked
     const [startQuiz, setStartQuiz] = useState(false)
 
-    // Create state to store a objects for the trivia questions
-    const [questionData, setQuestionData] = useState([{}])
+    // Create state to store an array of objects for the trivia questions
+    const [questionData, setQuestionData] = useState([])
+
+    console.log(questionData)
 
     // Fetch the question from the API when the startQuiz becomes true
     useEffect(() => {
         fetch('https://opentdb.com/api.php?amount=5&category=9&difficulty=easy&type=multiple')
             .then(res => res.json())
-            .then(data => setQuestionData(data.results))
+            .then(data => (
+                setQuestionData(data.results)
+            ))
     }, [startQuiz])
 
     // Handle the click event from the 'Start Quiz' button
@@ -27,7 +32,7 @@ function App() {
         setStartQuiz(prevStartQuiz => !prevStartQuiz)
     }
 
-    // Map over the objects and put them in their own divs
+    // Map over the objects and put them in their own divs passing the necessary props
     const questions = questionData.map(data => (
         <TriviaQuestion
             key={data.question}
@@ -41,7 +46,9 @@ function App() {
         <div className='app-container'>
             {
                 // If startQuiz is false then display the intro screen
-                !startQuiz && <IntroScreen startQuiz={handleStartQuizClick}/>
+                !startQuiz && <IntroScreen 
+                    startQuiz={handleStartQuizClick}
+                />
             }
             
             {

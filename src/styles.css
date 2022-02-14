@@ -38,6 +38,11 @@
     border-radius: 7px;
     border: 1px solid black;
     height: 5vh;
+    padding: 15px;
+}
+
+.question-button:hover {
+    background-color: lightgray;
 }
 
 .check-answers-button {
