@@ -4,7 +4,7 @@ import React from 'react'
 /* 
  * Accept props for the 'Start Quiz button
  * If the button is clicked it must set the StartQuiz bool to true
- */
+*/
 
 function IntroScreen(props) {
     return (
