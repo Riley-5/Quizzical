@@ -1,8 +1,10 @@
 import React from 'react'
+import './styles.css'
+import IntroScreen from './components/IntroScreen'
 
 function App() {
     return (
-        <h1>hi</h1>
+        <IntroScreen/>
     )
 }
 
