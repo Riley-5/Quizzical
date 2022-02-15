@@ -3,9 +3,10 @@ import React from 'react'
 /*
  * Takes in props for the question, right answer and wrong answers
  * props are: 
+ * id
  * question
- * rightAnswer
- * WrongAnswer -> which comes as an array
+ * answerOptions -> comes as an array
+ * answer
 */
 
 function TriviaQuestion(props) {
@@ -13,10 +14,10 @@ function TriviaQuestion(props) {
         <div className='question-container'>
             <h1>{props.question}</h1>
             <div className='question-button-container'>
-                <button className='question-button'>{props.rightAnswer}</button>
-                <button className='question-button'>{props.wrongAnswer[0]}</button>
-                <button className='question-button'>{props.wrongAnswer[1]}</button>
-                <button className='question-button'>{props.wrongAnswer[2]}</button>
+                <button className='question-button'>{props.answerOptions[0]}</button>
+                <button className='question-button'>{props.answerOptions[1]}</button>
+                <button className='question-button'>{props.answerOptions[2]}</button>
+                <button className='question-button'>{props.answerOptions[3]}</button>
             </div>
             <hr/>
         </div>

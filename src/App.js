@@ -15,15 +15,28 @@ function App() {
     // Create state to store an array of objects for the trivia questions
     const [questionData, setQuestionData] = useState([])
 
-    console.log(questionData)
-
     // Fetch the question from the API when the startQuiz becomes true
     useEffect(() => {
+        // Create an array to hold the data comming in from the API
+        const questionsApiData = []
+        // Fetch data from API 
         fetch('https://opentdb.com/api.php?amount=5&category=9&difficulty=easy&type=multiple')
             .then(res => res.json())
             .then(data => (
-                setQuestionData(data.results)
+                // Loop through each returned element from the API and put the results in a custom object
+                data.results.forEach(element => (
+                    questionsApiData.push({
+                        id: nanoid(),
+                        question: element.question,
+                        answerOptions: [
+                            element.correct_answer, element.incorrect_answers[0], element.incorrect_answers[1], element.incorrect_answers[2]
+                        ],
+                        answer: element.correct_answer
+                    })
+                ))
             ))
+        // Set the QuestionData state to the questions array
+        setQuestionData(questionsApiData)
     }, [startQuiz])
 
     // Handle the click event from the 'Start Quiz' button
@@ -35,10 +48,10 @@ function App() {
     // Map over the objects and put them in their own divs passing the necessary props
     const questions = questionData.map(data => (
         <TriviaQuestion
-            key={data.question}
+            key={data.id}
             question={data.question}
-            rightAnswer={data.correct_answer}
-            wrongAnswer={data.incorrect_answers}
+            answerOptions={data.answerOptions}
+            correctAnswer={data.answer}
         />
     ))
 
