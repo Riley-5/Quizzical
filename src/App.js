@@ -4,10 +4,6 @@ import {nanoid} from 'nanoid'
 import IntroScreen from './components/IntroScreen'
 import TriviaQuestion from './components/TriviaQuestion'
 
-/* TODO
- * Make sure API request loads before running the quiz itself
-*/
-
 function App() {
     // Create state to track if the 'Start Quiz button' was clicked
     const [startQuiz, setStartQuiz] = useState(false)
@@ -72,15 +68,19 @@ function App() {
         setQuestionData(prevQuestionData => prevQuestionData.map(question => {
             /* If the id matches and the userAnswer is correct 
              * Change the isCorrect bool to true
-             * Else return question object
+             * Else only change isSelected to true
             */
             return question.id === id && userAnswer === question.answer ?
                     {...question, isCorrect: true} :
                     question
             }))
+
+        event.target.style.backgroundColor = 'lightblue'
+        event.target.style.border = 'none'
     }
 
     function tallyAnswers() {
+        // Loop through the data and add 1 to the counter for every isCorrect is true value
         for (let i = 0; i < questionData.length; i++) {
             if (questionData[i].isCorrect === true) {
                 setCorrectAnswerCount(prevCorrectAnswerCount => prevCorrectAnswerCount + 1)
@@ -118,7 +118,8 @@ function App() {
             }
             {
                 // If startQuiz is true display 'Check Answers' button
-                startQuiz && !checkAnswerClicked && <button className='check-answers-button' onClick={tallyAnswers}>Check Answers</button>
+                startQuiz && !checkAnswerClicked && 
+                    <button className='check-answers-button' onClick={tallyAnswers}>Check Answers</button>
             }
             {
                 // If check answer is true then display the tallied score
