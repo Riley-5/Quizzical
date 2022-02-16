@@ -37,7 +37,7 @@ function App() {
             ))
         // Set the QuestionData state to the questions array
         setQuestionData(questionsApiData)
-    }, [startQuiz])
+    }, [])
 
     // Handle the click event from the 'Start Quiz' button
     function handleStartQuizClick() {
