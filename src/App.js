@@ -15,10 +15,17 @@ function App() {
     // Create state to store an array of objects for the trivia questions
     const [questionData, setQuestionData] = useState([])
 
+    // Create state to store the number of correct answers
+    const [correctAnswerCount, setCorrectAnswerCount] = useState(0)
+
+    // Create state to track if the check answers button is clicked
+    const [checkAnswerClicked, setCheckAnswerClicked] = useState(false)
+
     // Fetch the question from the API when the startQuiz becomes true
     useEffect(() => {
         // Create an array to hold the data comming in from the API
         const questionsApiData = []
+
         // Fetch data from API 
         fetch('https://opentdb.com/api.php?amount=5&category=9&difficulty=easy&type=multiple')
             .then(res => res.json())
@@ -27,6 +34,7 @@ function App() {
                 data.results.forEach(element => (
                     questionsApiData.push({
                         id: nanoid(),
+                        isCorrect: false,
                         question: element.question,
                         answerOptions: [
                             element.correct_answer, element.incorrect_answers[0], element.incorrect_answers[1], element.incorrect_answers[2]
@@ -45,13 +53,39 @@ function App() {
         setStartQuiz(prevStartQuiz => !prevStartQuiz)
     }
 
+    function checkAnswer(event, id) {
+        const userAnswer = event.target.innerHTML
+        setQuestionData(prevQuestionData => prevQuestionData.map(question => {
+            /* If the id matches and the userAnswer is correct 
+             * Change the isCorrect bool to true
+             * Else return question object
+            */
+            return question.id === id && userAnswer === question.answer ?
+                    {...question, isCorrect: true} :
+                    question
+            }))
+    }
+
+    function tallyAnswers() {
+        for (let i = 0; i < questionData.length; i++) {
+            if (questionData[i].isCorrect === true) {
+                setCorrectAnswerCount(prevCorrectAnswerCount => prevCorrectAnswerCount + 1)
+            }
+        }
+
+        setCheckAnswerClicked(true)
+    }
+
     // Map over the objects and put them in their own divs passing the necessary props
     const questions = questionData.map(data => (
         <TriviaQuestion
             key={data.id}
+            id={data.id}
+            isCorrect={data.isCorrect}
             question={data.question}
             answerOptions={data.answerOptions}
-            correctAnswer={data.answer}
+            answer={data.answer}
+            checkAnswer={(event) => checkAnswer(event, data.id)}
         />
     ))
 
@@ -70,7 +104,11 @@ function App() {
             }
             {
                 // If startQuiz is true display 'Check Answers' button
-                startQuiz && <button className='check-answers-button'>Check Answers</button>
+                startQuiz && <button className='check-answers-button' onClick={tallyAnswers}>Check Answers</button>
+            }
+            {
+                // If check answer is true then display the tallied score
+                checkAnswerClicked && <h4>You scored {correctAnswerCount}/5 correct answers</h4>
             }
         </div>
     )
