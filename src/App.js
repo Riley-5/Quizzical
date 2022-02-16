@@ -21,6 +21,20 @@ function App() {
     // Create state to track if the check answers button is clicked
     const [checkAnswerClicked, setCheckAnswerClicked] = useState(false)
 
+        // Shuffle the array
+        function shuffleArray(array) {
+            for (var i = array.length - 1; i > 0; i--) {
+            
+                // Generate random number
+                var j = Math.floor(Math.random() * (i + 1));
+                            
+                var temp = array[i];
+                array[i] = array[j];
+                array[j] = temp;
+            } 
+            return array;
+        }
+
     // Fetch the question from the API when the startQuiz becomes true
     useEffect(() => {
         // Create an array to hold the data comming in from the API
@@ -36,9 +50,9 @@ function App() {
                         id: nanoid(),
                         isCorrect: false,
                         question: element.question,
-                        answerOptions: [
+                        answerOptions: shuffleArray([
                             element.correct_answer, element.incorrect_answers[0], element.incorrect_answers[1], element.incorrect_answers[2]
-                        ],
+                        ]),
                         answer: element.correct_answer
                     })
                 ))
@@ -104,7 +118,7 @@ function App() {
             }
             {
                 // If startQuiz is true display 'Check Answers' button
-                startQuiz && <button className='check-answers-button' onClick={tallyAnswers}>Check Answers</button>
+                startQuiz && !checkAnswerClicked && <button className='check-answers-button' onClick={tallyAnswers}>Check Answers</button>
             }
             {
                 // If check answer is true then display the tallied score
