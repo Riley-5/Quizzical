@@ -19,6 +19,7 @@ function TriviaQuestion(props) {
             key={button}
             id={props.answerOptions.indexOf(button)}
             option={button}
+            checkAnswer={props.checkAnswer}
         />
     ))
 

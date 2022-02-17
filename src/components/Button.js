@@ -2,14 +2,14 @@ import React from 'react'
 
 /*
  * Reacieves the following props
- * Option
- * Id
+ * option
+ * id
+ * checkAnswer
 */
 
 function Button(props) {
-    console.log(props)
     return (
-        <button id={props.id} className='question-button'>{props.option}</button>
+        <button id={props.id} className='question-button' onClick={props.checkAnswer}>{props.option}</button>
     )
 }
 
