@@ -74,9 +74,6 @@ function App() {
                     {...question, isCorrect: true} :
                     question
             }))
-
-        event.target.style.backgroundColor = 'lightblue'
-        event.target.style.border = 'none'
     }
 
     function tallyAnswers() {

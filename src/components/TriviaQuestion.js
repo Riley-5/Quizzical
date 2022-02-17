@@ -1,4 +1,5 @@
 import React from 'react'
+import Button from './Button'
 
 /*
  * Takes in props for the question, right answer and wrong answers
@@ -9,15 +10,23 @@ import React from 'react'
  * answer
 */
 
+// TODO give buttons their own id
+
 function TriviaQuestion(props) {
+    // Map the answerOptions to their own custom Button component
+    const questionButton = props.answerOptions.map(button => (
+        <Button
+            key={button}
+            id={props.answerOptions.indexOf(button)}
+            option={button}
+        />
+    ))
+
     return (
         <div className='question-container'>
             <h1>{props.question}</h1>
             <div className='question-button-container'>
-                <button id={props.id} className='question-button' onClick={props.checkAnswer}>{props.answerOptions[0]}</button>
-                <button id={props.id} className='question-button' onClick={props.checkAnswer}>{props.answerOptions[1]}</button>
-                <button id={props.id} className='question-button' onClick={props.checkAnswer}>{props.answerOptions[2]}</button>
-                <button id={props.id} className='question-button' onClick={props.checkAnswer}>{props.answerOptions[3]}</button>
+                {questionButton}
             </div>
             <hr/>
         </div>
